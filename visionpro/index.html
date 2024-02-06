@@ -1,8 +1,22 @@
 <!DOCTYPE html>
 <html>
 <body>
-<script type="javascript">
-document.write("<code>" + JSON.stringify(screen, null, 2) + "</code>");
+<script>
+document.write("Screen properties:");
+document.write("<ul>");
+for (const p in screen) {
+        document.write(`<li>${p} = ${screen[p]}`);
+}
+document.write("</ul>");
+
+document.write("Navigator properties:");
+document.write("<ul>");
+for (const p in navigator) {
+    if (typeof(navigator[p]) !== 'function') {
+        document.write(`<li>${p} = ${navigator[p]}`);
+    }
+}
+
 </script>
 </body>
 </html>
