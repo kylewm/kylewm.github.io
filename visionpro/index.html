@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html>
-<body>
-<script>
-document.write("Screen properties:");
-document.write("<ul>");
-for (const p in screen) {
-        document.write(`<li>${p} = ${screen[p]}`);
-}
-document.write("</ul>");
+  <body>
+    <script>
+      function listProperties(o) {
+        document.write("<ul>");
+        if (o) {
+            for (const k in o) {
+            if (typeof o[k] !== "function") {
+                document.write(`<li>${k} = ${o[k]}`);
+            }
+            }
+        } else {
+            document.write("object is undefined");
+        }
+        document.write("</ul>");
+      }
 
-document.write("Navigator properties:");
-document.write("<ul>");
-for (const p in navigator) {
-    if (typeof(navigator[p]) !== 'function') {
-        document.write(`<li>${p} = ${navigator[p]}`);
-    }
-}
+      document.write("Screen properties:");
+      listProperties(screen);
+
+      document.write("Navigator properties:");
+      listProperties(navigator);
+
+      document.write("UserAgentData properties:");
+      listProperties(navigator.userAgentData);
+
+      if (navigator.userAgentData) {
+        document.write("<p>brands:" + JSON.stringify(navigator.userAgentData.brands) + "</p>");
+      }
+
+      document.write("DocumentElement ontouch start:");
+      document.write("<p>" + document.documentElement.ontouchstart + "</p>");
+
+      document.write("devicePixelRatio:");
+      document.write("<p>" + window.devicePixelRatio + "</p>");
+
+      document.write("XR properties:");
+      if (navigator.xr) {
+        listProperties(navigator.xr);
+      } else {
+        document.write("navigator.xr not defined");
+      }
 
 </script>
-</body>
+  </body>
 </html>
