@@ -3,45 +3,69 @@
   <body>
     <script>
       function listProperties(o) {
-        document.write("<ul>");
-        if (o) {
-            for (const k in o) {
-            if (typeof o[k] !== "function") {
-                document.write(`<li>${k} = ${o[k]}`);
-            }
-            }
+        if (o == null) {
+          document.write("<p>null or undefined</p>");
+        } else if (Array.isArray(o)) {
+          for (let i = 0; i < o.length; i++) {
+            document.write(`<p>#${i}</p>`);
+            listProperties(o[i]);
+          }
         } else {
-            document.write("object is undefined");
+          document.write("<ul>");
+          document.write(`<li>toString = ${o}</li>`);
+          for (const k in o) {
+            document.write(`<li>${k} = ${o[k]}`);
+          }
+          document.write("</ul>");
         }
-        document.write("</ul>");
       }
 
-      document.write("Screen properties:");
-      listProperties(screen);
+      async function go() {
+        const devices = await navigator.mediaDevices.enumerateDevices();
 
-      document.write("Navigator properties:");
-      listProperties(navigator);
+        let isImmersiveAr, isImmersiveVr, isInline;
+        if (navigator.xr.isSessionSupported) {
+          isImmersiveAr = await navigator.xr.isSessionSupported("immersive-ar");
+          isImmersiveVr = await navigator.xr.isSessionSupported("immersive-vr");
+          isInline = await navigator.xr.isSessionSupported("inline");
+        }
 
-      document.write("UserAgentData properties:");
-      listProperties(navigator.userAgentData);
+        document.write("Screen properties:");
+        listProperties(screen);
 
-      if (navigator.userAgentData) {
-        document.write("<p>brands:" + JSON.stringify(navigator.userAgentData.brands) + "</p>");
-      }
+        document.write("Navigator properties:");
+        listProperties(navigator);
 
-      document.write("DocumentElement ontouch start:");
-      document.write("<p>" + document.documentElement.ontouchstart + "</p>");
+        document.write("UserAgentData properties:");
+        listProperties(navigator.userAgentData);
 
-      document.write("devicePixelRatio:");
-      document.write("<p>" + window.devicePixelRatio + "</p>");
+        if (navigator.userAgentData) {
+          document.write("UserAgentData Brands properties:");
+          listProperties(navigator.userAgentData.brands);
+        }
 
-      document.write("XR properties:");
-      if (navigator.xr) {
+        document.write("MediaDevices properties:");
+        listProperties(devices);
+
+        document.write("MediaCapabilities properties:");
+        listProperties(navigator.mediaCapabilities);
+
+        document.write("DocumentElement ontouchstart:");
+        document.write("<p>" + document.documentElement.ontouchstart + "</p>");
+
+        document.write("devicePixelRatio:");
+        document.write("<p>" + window.devicePixelRatio + "</p>");
+
+        document.write("XR properties:");
         listProperties(navigator.xr);
-      } else {
-        document.write("navigator.xr not defined");
+
+        document.write("navigator.xr.isSessionSupported():");
+        document.write("<ul><li>immersive-ar: " + isImmersiveAr);
+        document.write("<li>immersive-vr: " + isImmersiveVr);
+        document.write("<li>inline: " + isInline + "</ul>");
       }
 
-</script>
+      go();
+    </script>
   </body>
 </html>
