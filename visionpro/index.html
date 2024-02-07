@@ -24,7 +24,7 @@
         const devices = await navigator.mediaDevices.enumerateDevices();
 
         let isImmersiveAr, isImmersiveVr, isInline;
-        if (navigator.xr.isSessionSupported) {
+        if (navigator.xr && navigator.xr.isSessionSupported) {
           isImmersiveAr = await navigator.xr.isSessionSupported("immersive-ar");
           isImmersiveVr = await navigator.xr.isSessionSupported("immersive-vr");
           isInline = await navigator.xr.isSessionSupported("inline");
