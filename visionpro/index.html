@@ -21,7 +21,14 @@
       }
 
       async function go() {
-        const devices = await navigator.mediaDevices.enumerateDevices();
+        let devices;
+        if (navigator.mediaDevices) {
+          try {
+            devices = await navigator.mediaDevices.enumerateDevices();
+          } catch (e)) {
+            console.log("enumerateDevices failed", e);
+          }
+        }
 
         let isImmersiveAr, isImmersiveVr, isInline;
         if (navigator.xr && navigator.xr.isSessionSupported) {
